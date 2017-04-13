@@ -7,34 +7,37 @@ Self-Driving Car Engineer Nanodegree Program
 The included source implements the extended Kalman filter in C++. The data folder contains simulated lidar and radar measurements for an object that travels in a figure eight around a sensor. The Kalman filter estimates the object's position and velocity. The metric used to measure the deviation from the ground truth is root mean square error (RMSE).
 
 ## Compilation
-The source can be compiled without error using `cmake` and `make`.<br>
-![Kalman filter cmd compile](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/CMD-compile.PNG "Kalman filter cmd compile")
+The source can be compiled without error using `cmake` and `make`.<br><br>
+![Kalman filter cmd compile](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/CMD-compile.PNG "Kalman filter cmd compile")<br><br>
 
-The source can be compiled without error using Microsoft Visual Studio.<br>
+The source can be compiled without error using Microsoft Visual Studio.<br><br>
 ![Kalman filter mvs compile](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/MVS-compile.PNG "Kalman filter mvs compile")
 
 ## Results for Included Data Sets
 Data set 1 RMSE: 0.0651795 0.0605726 0.544212 0.544226<br>
-Data set 2 RMSE: 0.185791 0.190311 0.474852 0.805316<br>
+Data set 2 RMSE: 0.185791 0.190311 0.474852 0.805316<br><br>
 ![Kalman filter results](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/Results.PNG "Kalman filter results")
 
 ## Results Visualization
-Data set 1 is visualized using a chart in Microsoft Excel. The green line is the ground truth object location. The orange markers are lidar/radar measurements. The blue line is the EKF estimate of position.<br>
+Data set 1 is visualized using a chart in Microsoft Excel. The green line is the ground truth object location. The orange markers are lidar/radar measurements. The blue line is the EKF estimate of position.<br><br>
 ![Kalman filter results visualization](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/Visualization1.PNG "Kalman filter results visualization")
 
 ## 2-D Unity Visualizer
-Important: A modified `kalman_tracker.py` script is included.
+<b>Important:</b> A modified `kalman_tracker.py` script is included.
 Usage: `python kalman_tracker.py src/ExtendedKF.exe`
 
-To optimize the Kalman filter program for real-time use with the Unity Visualizer, the Python script adds a flag to the internal command line (subprocess). This instructs the filter program to utilize only the last 10 items of the input file. The RMSE reports in the Visualizer therefore correspond to the previous 10 measurements.
+To optimize the Kalman filter program for real-time use with the Unity Visualizer, the Python script adds a flag to the internal command line (subprocess). This instructs the filter program to utilize only the last 10 items of the input file. The RMSE reports in the Visualizer therefore correspond to the 10 most recent measurements.
 
-Below is the fused result of a run with Lidar and Radar enabled:<br>
+---
+<b>1 of 3:</b> Below is the fused result of a run with Lidar and Radar enabled. The green markers indicate the EKF estimate of position:<br>
 ![Unity visualization LR](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-LR.PNG "Unity visualization LR")
 
-Below is the result with only Radar enabled:<br>
+---
+<b>2 of 3:</b> Below is the result with only Radar enabled:<br>
 ![Unity visualization R](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-R.PNG "Unity visualization R")
 
-Below is the result with only Lidar enabled:<br>
+---
+<b>3 of 3:</b> Below is the result with only Lidar enabled:<br>
 ![Unity visualization L](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-L.PNG "Unity visualization L")
 
 ## Dependencies
