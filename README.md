@@ -1,7 +1,41 @@
-# Extended Kalman Filter Project Starter Code
+# Extended Kalman Filter Project
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+
+## Overview
+The included source implements the extended Kalman filter in C++. The data folder contains simulated lidar and radar measurements for an object that travels in a figure eight around a sensor. The Kalman filter estimates the object's position and velocity. The metric used to measure the deviation from the ground truth is root mean square error (RMSE).
+
+## Compilation
+The source can be compiled without error using `cmake` and `make`.<br>
+![Kalman filter cmd compile](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/CMD-compile.PNG "Kalman filter cmd compile")
+
+The source can be compiled without error using Microsoft Visual Studio.<br>
+![Kalman filter mvs compile](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/MVS-compile.PNG "Kalman filter mvs compile")
+
+## Results for Included Data Sets
+Data set 1 RMSE: 0.0651795 0.0605726 0.544212 0.544226<br>
+Data set 2 RMSE: 0.185791 0.190311 0.474852 0.805316<br>
+![Kalman filter results](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/Results.PNG "Kalman filter results")
+
+## Results Visualization
+Data set 1 is visualized using a chart in Microsoft Excel. The green line is the ground truth object location. The orange markers are lidar/radar measurements. The blue line is the EKF estimate of position.<br>
+![Kalman filter results visualization](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/Visualization1.PNG "Kalman filter results visualization")
+
+## 2-D Unity Visualizer
+Important: A modified `kalman_tracker.py` script is included.
+Usage: `python kalman_tracker.py src/ExtendedKF.exe`
+
+To optimize the Kalman filter program for real-time use with the Unity Visualizer, the Python script adds a flag to the internal command line (subprocess). This instructs the filter program to utilize only the last 10 items of the input file. The RMSE reports in the Visualizer therefore correspond to the previous 10 measurements.
+
+Below is the fused result of a run with Lidar and Radar enabled:<br>
+![Unity visualization LR](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-LR.PNG "Unity visualization LR")
+
+Below is the result with only Radar enabled:<br>
+![Unity visualization R](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-R.PNG "Unity visualization R")
+
+Below is the result with only Lidar enabled:<br>
+![Unity visualization L](https://github.com/jwdunn1/CarND-Extended-Kalman-Filter-Project/blob/master/images/viz-L.PNG "Unity visualization L")
 
 ## Dependencies
 
@@ -22,64 +56,11 @@ Self-Driving Car Engineer Nanodegree Program
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make` 
    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
-4. Run it: `./ExtendedKF path/to/input.txt path/to/output.txt`. You can find
-   some sample inputs in 'data/'.
+4. Run it: `./ExtendedKF path/to/input.txt path/to/output.txt`. Sample inputs can be found in 'data/'.
     - eg. `./ExtendedKF ../data/sample-laser-radar-measurement-data-1.txt output.txt`
 
-## Editor Settings
-
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+A debug version can be made using: `cmake -DCMAKE_BUILD_TYPE=Debug .. && make`
 
 ## Code Style
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
-
-## Generating Additional Data
-
-This is optional!
-
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
-
-## Project Instructions and Rubric
-
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
-
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/12dd29d8-2755-4b1b-8e03-e8f16796bea8)
-for instructions and the project rubric.
-
-## Hints!
-
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! We'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Regardless of the IDE used, every submitted project must
-still be compilable with cmake and make.
+Conforms to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
