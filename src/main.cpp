@@ -1,3 +1,9 @@
+/*______________________________________________________________________________
+# main.cpp                                                                 80->|
+# This module implements the main function
+# Optimized for use with the Visualization tool
+*/
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -12,11 +18,12 @@ using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using std::vector;
+bool viz = false;
 
 void check_arguments(int argc, char* argv[]) {
   string usage_instructions = "Usage instructions: ";
   usage_instructions += argv[0];
-  usage_instructions += " path/to/input.txt output.txt";
+  usage_instructions += " path/to/input.txt output.txt [/viz]";
 
   bool has_valid_args = false;
 
@@ -27,13 +34,15 @@ void check_arguments(int argc, char* argv[]) {
     cerr << "Please include an output file.\n" << usage_instructions << endl;
   } else if (argc == 3) {
     has_valid_args = true;
-  } else if (argc > 3) {
+  } else if (argc == 4) {
+    has_valid_args = true;
+    viz = true;
+  } else if (argc > 4) {
     cerr << "Too many arguments.\n" << usage_instructions << endl;
   }
 
-  if (!has_valid_args) {
+  if (!has_valid_args)
     exit(EXIT_FAILURE);
-  }
 }
 
 void check_files(ifstream& in_file, string& in_name,
@@ -133,12 +142,14 @@ int main(int argc, char* argv[]) {
 
   //Call the EKF-based fusion
   size_t N = measurement_pack_list.size();
-  for (size_t k = 0; k < N; ++k) {
-    // start filtering from the second frame (the speed is unknown in the first
-    // frame)
+  int start = 0;
+  // Increase performance on the Kalman Tracker Visualization Tool
+  if (viz && N > 11) start = N - 10; // if /viz flag, use only last 10 measures
+  for (size_t k = start; k < N; ++k) {
+    // start filtering from second frame (the speed is unknown in first frame)
     fusionEKF.ProcessMeasurement(measurement_pack_list[k]);
 
-    // output the estimation
+    // output the Kalman estimation
     out_file_ << fusionEKF.ekf_.x_(0) << "\t";
     out_file_ << fusionEKF.ekf_.x_(1) << "\t";
     out_file_ << fusionEKF.ekf_.x_(2) << "\t";
@@ -146,11 +157,12 @@ int main(int argc, char* argv[]) {
 
     // output the measurements
     if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::LASER) {
-      // output the estimation
+      // output the laser measurement
       out_file_ << measurement_pack_list[k].raw_measurements_(0) << "\t";
       out_file_ << measurement_pack_list[k].raw_measurements_(1) << "\t";
-    } else if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::RADAR) {
-      // output the estimation in the cartesian coordinates
+    } else if (measurement_pack_list[k].sensor_type_ ==
+               MeasurementPackage::RADAR) {
+      // output the radar measurement in cartesian coordinates
       float ro = measurement_pack_list[k].raw_measurements_(0);
       float phi = measurement_pack_list[k].raw_measurements_(1);
       out_file_ << ro * cos(phi) << "\t"; // p1_meas
@@ -169,16 +181,16 @@ int main(int argc, char* argv[]) {
 
   // compute the accuracy (RMSE)
   Tools tools;
-  cout << "Accuracy - RMSE:" << endl << tools.CalculateRMSE(estimations, ground_truth) << endl;
+  VectorXd rmse = tools.CalculateRMSE(estimations, ground_truth);
+  cout << "RMSE: " << rmse(0) << " " << rmse(1) << " " << rmse(2) << " " 
+       << rmse(3) << " " << endl;
 
   // close files
-  if (out_file_.is_open()) {
+  if (out_file_.is_open())
     out_file_.close();
-  }
 
-  if (in_file_.is_open()) {
+  if (in_file_.is_open())
     in_file_.close();
-  }
 
   return 0;
 }

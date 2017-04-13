@@ -1,3 +1,8 @@
+/*______________________________________________________________________________
+# FusionEKF.h                                                              80->|
+# This module declares the FusionEKF class
+*/
+
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
@@ -35,8 +40,8 @@ private:
   // check whether the tracking toolbox was initiallized or not (first measurement)
   bool is_initialized_;
 
-  // previous timestamp
-  long previous_timestamp_;
+  // previous timestamp  (this was missing "long long"!!)
+  long long previous_timestamp_;
 
   // tool object used to compute Jacobian and RMSE
   Tools tools;
@@ -44,6 +49,10 @@ private:
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
+  // additional...
+  Eigen::MatrixXd F_;
+  Eigen::MatrixXd P_;
+  Eigen::MatrixXd Q_;
 };
 
 #endif /* FusionEKF_H_ */
